@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import CategoryGrid from './components/CategoryGrid'; // Import it
 
 function App() {
   return (
@@ -9,11 +10,7 @@ function App() {
       
       <main>
         <Hero />
-        
-        {/* Placeholder for the next section: Categories */}
-        <div className="py-20 text-center">
-            <p className="text-secondary text-sm">Scroll down for Categories...</p>
-        </div>
+        <CategoryGrid />
       </main>
     </div>
   );
