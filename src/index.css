@@ -1,0 +1,54 @@
+/* Habitore Design System
+  Using Tailwind CSS v4 (@theme configuration)
+*/
+
+@import "tailwindcss";
+
+@theme {
+  /* --- Color Palette --- */
+  
+  /* Primary text and structural elements (Soft Black) */
+  --color-primary: #333333;
+  
+  /* Secondary text for descriptions/subtitles (Dark Grey) */
+  --color-secondary: #666666;
+  
+  /* Action color for buttons and highlights (Terracotta) */
+  --color-accent: #BC6C4E;
+  
+  /* Main app background (Warm Cream) - avoids harsh white */
+  --color-background: #F9F8F4;
+  
+  /* Card/Modal backgrounds (Pure White) */
+  --color-surface: #FFFFFF;
+  
+  /* Borders and dividers (Greige) */
+  --color-muted: #EBE9E4;
+
+  /* --- Typography --- */
+  
+  /* Used for Headings (Brand Identity) */
+  --font-family-serif: "Spectral", serif;
+  
+  /* Used for Body/UI text (Readability) */
+  --font-family-sans: "Inter", sans-serif;
+
+  /* --- Layout Utilities --- */
+  --spacing-container: 1.5rem;
+  --breakpoint-2xl: 1400px;
+}
+
+/* Base resets 
+  Ensuring the app defaults to our custom background and font 
+*/
+body {
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  font-family: var(--font-family-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Apply Serif font to all headings automatically */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-serif);
+}
