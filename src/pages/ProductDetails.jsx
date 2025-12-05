@@ -1,19 +1,211 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+/**
+ * ProductDetails.jsx
+ * * Displays full information for a single product.
+ * * Features: Image Gallery, Color/Size Selection, Quantity Logic.
+ */
+
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { Star, Minus, Plus, ShoppingBag, ArrowRight, Truck, ShieldCheck } from 'lucide-react';
+
+// --- MOCK DATA (Simulates an API response) ---
+const PRODUCT_DATABASE = {
+  1: {
+    id: 1,
+    name: "Minimalist Wireless Headphones",
+    price: 249.00,
+    rating: 4.8,
+    reviews: 124,
+    description: "Experience pure sound with our noise-cancelling minimalist headphones. Crafted with premium materials for all-day comfort and up to 40 hours of battery life.",
+    images: [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&q=80&w=800", // Placeholder variants
+      "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&q=80&w=800"
+    ],
+    colors: ["#1a1a1a", "#e5e5e5", "#3b82f6"],
+    sizes: null, // Electronics usually don't have sizes
+    category: "Electronics"
+  },
+  2: {
+    id: 2,
+    name: "Organic Cotton Oversized Hoodie",
+    price: 85.00,
+    rating: 4.5,
+    reviews: 89,
+    description: "Ethically sourced organic cotton hoodie. Features a relaxed fit, drop shoulders, and a kangaroo pocket. Perfect for layering in any season.",
+    images: [
+      "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1620799140408-ed5341cd2431?auto=format&fit=crop&q=80&w=800"
+    ],
+    colors: ["#e5e5e5", "#BC6C4E", "#333333"],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    category: "Fashion"
+  }
+};
 
 const ProductDetails = () => {
-  const { id } = useParams(); // Catches the ID from URL (e.g., /product/123)
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Form States
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedColor, setSelectedColor] = useState(0);
+  const [selectedSize, setSelectedSize] = useState("");
+  const [quantity, setQuantity] = useState(1);
+
+  // Simulate Fetching Data
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top on load
+    setLoading(true);
+    
+    // Simulate network delay
+    setTimeout(() => {
+      // Fetch product by ID, fallback to Product #1 if ID not found for demo
+      const data = PRODUCT_DATABASE[id] || PRODUCT_DATABASE[1]; 
+      setProduct(data);
+      if (data.sizes) setSelectedSize(data.sizes[0]); // Default size
+      setLoading(false);
+    }, 500);
+  }, [id]);
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (!product) return <div className="min-h-screen flex items-center justify-center">Product not found.</div>;
 
   return (
-    <div className="pt-10 pb-20 px-6 max-w-[1400px] mx-auto min-h-[60vh]">
-      <div className="text-sm text-secondary mb-6">
-        Home / Shop / <span className="text-primary">Product #{id}</span>
-      </div>
+    <div className="pt-10 pb-20 px-6 max-w-[1400px] mx-auto min-h-screen">
       
-      <h1 className="text-4xl font-serif text-primary mb-4">Product View: {id}</h1>
-      <p className="text-secondary">
-        This is where the full details, gallery, and "Add to Cart" logic will go.
-      </p>
+      {/* Breadcrumbs */}
+      <nav className="flex items-center text-sm text-secondary mb-8">
+        <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+        <span className="mx-2">/</span>
+        <Link to="#" className="hover:text-primary transition-colors">{product.category}</Link>
+        <span className="mx-2">/</span>
+        <span className="text-primary font-medium">{product.name}</span>
+      </nav>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+        
+        {/* --- LEFT: Image Gallery --- */}
+        <div className="space-y-4">
+          {/* Main Image */}
+          <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden border border-muted relative">
+            <img 
+              src={product.images[selectedImage]} 
+              alt={product.name} 
+              className="w-full h-full object-cover animate-in fade-in duration-500"
+            />
+          </div>
+          
+          {/* Thumbnails */}
+          <div className="grid grid-cols-4 gap-4">
+            {product.images.map((img, idx) => (
+              <button 
+                key={idx}
+                onClick={() => setSelectedImage(idx)}
+                className={`aspect-square rounded-md overflow-hidden border transition-all ${selectedImage === idx ? 'border-accent ring-1 ring-accent' : 'border-transparent hover:border-muted'}`}
+              >
+                <img src={img} alt="thumbnail" className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* --- RIGHT: Product Info --- */}
+        <div className="flex flex-col">
+          <h1 className="text-3xl md:text-4xl font-serif text-primary mb-2">
+            {product.name}
+          </h1>
+          
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-2xl font-medium text-primary">${product.price.toFixed(2)}</span>
+            <div className="flex items-center gap-1 border-l border-muted pl-4">
+              <Star size={16} fill="#eab308" className="text-yellow-500" />
+              <span className="text-sm font-medium">{product.rating}</span>
+              <span className="text-sm text-secondary underline decoration-muted underline-offset-4 cursor-pointer">
+                ({product.reviews} reviews)
+              </span>
+            </div>
+          </div>
+
+          <p className="text-secondary leading-relaxed mb-8 border-b border-muted pb-8">
+            {product.description}
+          </p>
+
+          {/* Selectors */}
+          <div className="space-y-6 mb-8">
+            
+            {/* Colors */}
+            <div>
+              <span className="text-sm font-medium text-primary block mb-3">Select Color</span>
+              <div className="flex gap-3">
+                {product.colors.map((color, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedColor(idx)}
+                    className={`w-8 h-8 rounded-full border border-gray-200 shadow-sm flex items-center justify-center transition-transform ${selectedColor === idx ? 'scale-110 ring-2 ring-accent ring-offset-2' : 'hover:scale-105'}`}
+                    style={{ backgroundColor: color }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Sizes (Conditional render) */}
+            {product.sizes && (
+              <div>
+                <span className="text-sm font-medium text-primary block mb-3">Select Size</span>
+                <div className="flex flex-wrap gap-3">
+                  {product.sizes.map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`min-w-[3rem] px-3 py-2 border rounded-md text-sm font-medium transition-all ${selectedSize === size ? 'border-accent bg-accent text-white' : 'border-muted text-secondary hover:border-primary hover:text-primary'}`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            {/* Quantity */}
+            <div className="flex items-center border border-muted rounded-md w-max">
+              <button 
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="p-3 text-secondary hover:text-primary hover:bg-gray-50 transition-colors"
+              >
+                <Minus size={16} />
+              </button>
+              <span className="w-12 text-center font-medium text-primary">{quantity}</span>
+              <button 
+                onClick={() => setQuantity(quantity + 1)}
+                className="p-3 text-secondary hover:text-primary hover:bg-gray-50 transition-colors"
+              >
+                <Plus size={16} />
+              </button>
+            </div>
+
+            {/* Add to Cart */}
+            <button className="flex-1 bg-primary text-white py-3 px-6 rounded-md font-medium hover:bg-accent transition-all flex items-center justify-center gap-2 shadow-sm">
+              <ShoppingBag size={20} /> Add to Cart - ${(product.price * quantity).toFixed(2)}
+            </button>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="grid grid-cols-2 gap-4 text-xs font-medium text-secondary">
+             <div className="flex items-center gap-2">
+               <Truck size={18} className="text-primary"/> Free Delivery over $50
+             </div>
+             <div className="flex items-center gap-2">
+               <ShieldCheck size={18} className="text-primary"/> 2 Year Warranty
+             </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   );
 };
