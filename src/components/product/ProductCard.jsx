@@ -6,12 +6,13 @@
 
 import React from 'react';
 import { Star, ShoppingCart, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
   return (
     <div className="group relative bg-white rounded-lg overflow-hidden border border-transparent hover:border-muted hover:shadow-lg transition-all duration-300">
-      
-      {/* --- Image Area --- */}
+
+      {/* Wrap the Image Area in a Link */}
       <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden">
         {/* Badge (Sale or New) */}
         {product.badge && (
@@ -25,12 +26,15 @@ const ProductCard = ({ product }) => {
           <Heart size={16} />
         </button>
 
-        {/* Image (With subtle zoom on hover) */}
-        <img 
-          src={product.image} 
-          alt={product.name} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
+        {/* Image (With subtle zoom on hover)  */}
+        {/* Make the image clickable to go to details. */}
+        <Link to={`/product/${product.id}`}>
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        </Link>
 
         {/* Quick Add Button (Slides up on hover) */}
         <div className="absolute bottom-0 left-0 w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
@@ -44,7 +48,7 @@ const ProductCard = ({ product }) => {
       <div className="p-4">
         {/* Category / Brand */}
         <p className="text-xs text-secondary mb-1 capitalize">{product.category}</p>
-        
+
         {/* Title (Truncated to 2 lines) */}
         <h3 className="text-sm font-medium text-primary leading-snug mb-2 line-clamp-2 min-h-[2.5em] group-hover:text-accent transition-colors">
           {product.name}
@@ -54,7 +58,7 @@ const ProductCard = ({ product }) => {
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             {product.oldPrice && (
-               <span className="text-xs text-secondary line-through">${product.oldPrice}</span>
+              <span className="text-xs text-secondary line-through">${product.oldPrice}</span>
             )}
             <span className="text-base font-semibold text-primary">${product.price}</span>
           </div>
