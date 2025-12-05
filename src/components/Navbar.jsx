@@ -6,6 +6,7 @@
 
 import React, { useState } from 'react';
 import { ShoppingBag, Search, User, Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,32 +22,33 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-muted">
-      
+
       <div className="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
-        
+
         {/* Mobile Trigger */}
-        <button 
+        <button
           className="md:hidden text-primary hover:text-accent transition-colors"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* Logo */}
-        <div className="text-2xl font-serif font-medium tracking-tight cursor-pointer">
+        {/* Changed Logo div to Link */}
+        <Link to="/" className="text-2xl font-serif font-medium tracking-tight cursor-pointer">
           Habitore
-        </div>
+        </Link>
 
-        {/* Desktop Links (Mapped from array) */}
+        {/* anchor which causes a full page refresh */}
+        {/* Change Nav Items to Link for instant, app-like navigation*/}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-secondary">
           {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
+            <Link
+              key={link.name}
+              to={link.href} // Make sure your navLinks array uses valid paths like '/shop' or '/'
               className="hover:text-primary hover:underline underline-offset-4 decoration-accent transition-all"
             >
               {link.name}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -56,7 +58,7 @@ const Navbar = () => {
           <button className="hover:text-accent transition-colors">
             <Search size={20} strokeWidth={1.5} />
           </button>
-          
+
           <button className="hidden sm:block hover:text-accent transition-colors">
             <User size={20} strokeWidth={1.5} />
           </button>
@@ -73,11 +75,15 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full bg-background border-b border-muted p-6 flex flex-col gap-4 shadow-lg animate-in slide-in-from-top-2">
-           {navLinks.map((link) => (
-             <a key={link.name} href={link.href} className="text-lg font-serif text-primary">
-               {link.name}
-             </a>
-           ))}
+          {navLinks.map((link) => (
+            <Link 
+              key={link.name} 
+              to={link.href} 
+              className="text-lg font-serif text-primary"
+            >
+              {link.name}
+            </Link>
+          ))}
         </div>
       )}
     </nav>
