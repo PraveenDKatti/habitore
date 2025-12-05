@@ -1,9 +1,8 @@
 import React from 'react';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import CategoryGrid from './components/CategoryGrid';
-import FeaturedSection from './components/FeaturedSection';
-import Footer from './components/Footer'; // Import Footer
+import Footer from './components/Footer';
+import Home from './pages/Home'
+
 
 function App() {
   return (
@@ -11,13 +10,7 @@ function App() {
       <Navbar />
       
       <main className="flex-1">
-        <Hero />
-        <CategoryGrid />
-        
-        <FeaturedSection 
-          title="Trending This Week" 
-          subtitle="Top picks across fashion, tech, and living."
-        />
+        <Home />
       </main>
 
       <Footer />
