@@ -7,9 +7,11 @@
 import React, { useState } from 'react';
 import { ShoppingBag, Search, User, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { setIsCartOpen, cartCount } = useCart();
 
   // Define broad categories for a general store
   const navLinks = [
@@ -63,11 +65,18 @@ const Navbar = () => {
             <User size={20} strokeWidth={1.5} />
           </button>
 
-          <button className="relative hover:text-accent transition-colors">
+          <button
+            className="relative hover:text-accent transition-colors"
+            onClick={() => setIsCartOpen(true)} // 3. Add Click Event
+          >
             <ShoppingBag size={20} strokeWidth={1.5} />
-            <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-accent text-[9px] font-bold text-white">
-              2
-            </span>
+
+            {/* 4. Conditional Rendering of Badge */}
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-accent text-[9px] font-bold text-white">
+                {cartCount}
+              </span>
+            )}
           </button>
         </div>
       </div>
@@ -76,9 +85,9 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full bg-background border-b border-muted p-6 flex flex-col gap-4 shadow-lg animate-in slide-in-from-top-2">
           {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              to={link.href} 
+            <Link
+              key={link.name}
+              to={link.href}
               className="text-lg font-serif text-primary"
             >
               {link.name}

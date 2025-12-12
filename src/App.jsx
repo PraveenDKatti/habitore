@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 // Layout Components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import CartDrawer from './components/cart/CartDrawer';
 
 // Pages
 import Home from './pages/Home';
@@ -22,6 +23,8 @@ function App() {
       {/* Navbar stays constant */}
       <Navbar />
       
+      <CartDrawer />
+
       <main className="flex-1">
         <Routes>
           {/* URL: / */}

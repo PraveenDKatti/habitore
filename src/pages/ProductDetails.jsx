@@ -7,6 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Star, Minus, Plus, ShoppingBag, ArrowRight, Truck, ShieldCheck } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 // --- MOCK DATA (Simulates an API response) ---
 const PRODUCT_DATABASE = {
@@ -53,6 +54,7 @@ const ProductDetails = () => {
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
 
   // Simulate Fetching Data
   useEffect(() => {
@@ -189,7 +191,10 @@ const ProductDetails = () => {
             </div>
 
             {/* Add to Cart */}
-            <button className="flex-1 bg-primary text-white py-3 px-6 rounded-md font-medium hover:bg-accent transition-all flex items-center justify-center gap-2 shadow-sm">
+            <button 
+              className="flex-1 bg-primary text-white py-3 px-6 rounded-md font-medium hover:bg-accent transition-all flex items-center justify-center gap-2 shadow-sm"
+              onClick={() => addToCart(product, quantity, product.colors[selectedColor], selectedSize)}
+            >
               <ShoppingBag size={20} /> Add to Cart - ${(product.price * quantity).toFixed(2)}
             </button>
           </div>
