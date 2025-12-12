@@ -9,13 +9,8 @@ import CartDrawer from './components/cart/CartDrawer';
 // Pages
 import Home from './pages/Home';
 import ProductDetails from './pages/ProductDetails';
+import Shop from './pages/Shop';
 
-// Placeholder for Shop page (will build this later)
-const ShopPlaceholder = () => (
-  <div className="h-[50vh] flex items-center justify-center text-xl font-serif">
-    Shop Category Page (Coming Soon)
-  </div>
-);
 
 function App() {
   return (
@@ -27,13 +22,9 @@ function App() {
 
       <main className="flex-1">
         <Routes>
-          {/* URL: / */}
           <Route path="/" element={<Home />} />
-          
-          {/* URL: /shop */}
-          <Route path="/shop" element={<ShopPlaceholder />} />
-          
-          {/* URL: /product/123 */}
+          {/* Route for shop */}
+          <Route path="/shop" element={<Shop />} />
           <Route path="/product/:id" element={<ProductDetails />} />
         </Routes>
       </main>

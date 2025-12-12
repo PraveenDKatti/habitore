@@ -15,11 +15,11 @@ const Navbar = () => {
 
   // Define broad categories for a general store
   const navLinks = [
-    { name: "Deals", href: "#" }, // High priority for general retail
-    { name: "Electronics", href: "#" },
-    { name: "Fashion", href: "#" },
-    { name: "Home & Living", href: "#" },
-    { name: "Beauty", href: "#" },
+    { name: "Deals", href: "/shop"}, // High priority for general retail
+    { name: "Electronics", href: "/shop" },
+    { name: "Fashion", href: "/shop" },
+    { name: "Home & Living", href: "/shop" },
+    { name: "Beauty", href: "/shop" },
   ];
 
   return (
