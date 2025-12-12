@@ -1,37 +1,49 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 
-// Layout Components
+// Layouts
+import AuthLayout from './layouts/AuthLayout';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CartDrawer from './components/cart/CartDrawer';
 
 // Pages
 import Home from './pages/Home';
-import ProductDetails from './pages/ProductDetails';
 import Shop from './pages/Shop';
+import ProductDetails from './pages/ProductDetails';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
+// Main Layout Wrapper (Holds Navbar/Footer for standard pages)
+const MainLayout = () => (
+  <div className="min-h-screen flex flex-col bg-background relative">
+    <Navbar />
+    <CartDrawer />
+    <main className="flex-1">
+      <Outlet /> {/* Renders the child route (Home, Shop, etc) */}
+    </main>
+    <Footer />
+  </div>
+);
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* Navbar stays constant */}
-      <Navbar />
+    <Routes>
       
-      <CartDrawer />
+      {/* 1. Standard Routes (With Navbar/Footer) */}
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+      </Route>
 
-      <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {/* Route for shop */}
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-        </Routes>
-      </main>
+      {/* 2. Authentication Routes (With AuthLayout - Split Screen) */}
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
 
-      {/* Footer stays constant */}
-      <Footer />
-    </div>
+    </Routes>
   );
 }
 
