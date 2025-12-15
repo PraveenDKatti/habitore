@@ -10,15 +10,21 @@ const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams(); // Hook to read URL
   const [filteredProducts, setFilteredProducts] = useState(PRODUCTS);
   
-  // Get Search Query from URL (e.g. ?q=hoodie)
+  // 1. Read BOTH Query and Category from URL
   const searchQuery = searchParams.get('q') || '';
+  const categoryParam = searchParams.get('category') || 'All'; // Read ?category=...
 
   const [filters, setFilters] = useState({
-    category: 'All',
+    category: categoryParam, // Set initial category from URL
     minPrice: 0,
     maxPrice: 1000,
     sortBy: 'newest'
   });
+
+  // 3. Update filters if URL changes (e.g. user clicks a different category link)
+  useEffect(() => {
+    setFilters(prev => ({ ...prev, category: categoryParam }));
+  }, [categoryParam]);
 
   useEffect(() => {
     let result = [...PRODUCTS];
