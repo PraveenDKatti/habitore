@@ -24,7 +24,6 @@ const ProductDetails = () => {
 
   // Simulate Fetching Data
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to top on load
     setLoading(true);
 
     // Simulate network delay

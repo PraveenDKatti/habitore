@@ -6,6 +6,7 @@ import AuthLayout from './layouts/AuthLayout';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CartDrawer from './components/cart/CartDrawer';
+import ScrollToTop from './utility/ScrollToTop'
 
 // Pages
 import Home from './pages/Home';
@@ -31,27 +32,31 @@ const MainLayout = () => (
 
 function App() {
   return (
-    <Routes>
-      
-      {/* 1. Standard Routes (With Navbar/Footer) */}
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/account" element={<Profile />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
+    <>
+      <ScrollToTop />
 
-      {/* 2. Authentication Routes (With AuthLayout - Split Screen) */}
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Route>
+      <Routes>
 
-      {/* 3. Checkout Layout (Standalone) */}
-      <Route path="/checkout" element={<Checkout />} />
+        {/* 1. Standard Routes (With Navbar/Footer) */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/account" element={<Profile />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
 
-    </Routes>
+        {/* 2. Authentication Routes (With AuthLayout - Split Screen) */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+
+        {/* 3. Checkout Layout (Standalone) */}
+        <Route path="/checkout" element={<Checkout />} />
+
+      </Routes>
+    </>
   );
 }
 
