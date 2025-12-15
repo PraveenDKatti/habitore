@@ -5,47 +5,7 @@
 
 import React from 'react';
 import ProductCard from './product/ProductCard';
-
-// Mock Data - In a real app, this comes from your API/Service
-const PRODUCTS = [
-  {
-    id: 1,
-    name: "Minimalist Wireless Headphones - Noise Cancelling",
-    category: "Electronics",
-    price: 249.00,
-    oldPrice: 299.00,
-    rating: 4.8,
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=600",
-    badge: "Best Seller"
-  },
-  {
-    id: 2,
-    name: "Organic Cotton Oversized Hoodie in Beige",
-    category: "Fashion",
-    price: 85.00,
-    rating: 4.5,
-    image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=600",
-    badge: "New"
-  },
-  {
-    id: 3,
-    name: "Matte Black Ceramic Pour-Over Set",
-    category: "Home",
-    price: 45.00,
-    rating: 4.9,
-    image: "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?auto=format&fit=crop&q=80&w=600",
-    badge: null
-  },
-  {
-    id: 4,
-    name: "Smart Watch Series 7 - Midnight Aluminum",
-    category: "Electronics",
-    price: 399.00,
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=600",
-    badge: "Sale"
-  }
-];
+import { PRODUCTS } from '../data/product';
 
 const FeaturedSection = ({ title, subtitle }) => {
   return (

@@ -3,20 +3,12 @@ import { Filter, X } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom'; // NEW IMPORT
 import ProductCard from '../components/product/ProductCard';
 import FilterSidebar from '../components/product/FilterSidebar';
-
-// Mock Data
-const ALL_PRODUCTS = [
-  { id: 1, name: "Minimalist Wireless Headphones", category: "Electronics", price: 249.00, rating: 4.8, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=600" },
-  { id: 2, name: "Organic Cotton Hoodie", category: "Fashion", price: 85.00, rating: 4.5, image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=600" },
-  { id: 3, name: "Ceramic Pour-Over Set", category: "Home & Living", price: 45.00, rating: 4.9, image: "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?auto=format&fit=crop&q=80&w=600" },
-  { id: 4, name: "Smart Watch Series 7", category: "Electronics", price: 399.00, rating: 4.7, image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=600" },
-  { id: 5, name: "Linen Lounge Chair", category: "Home & Living", price: 450.00, rating: 4.6, image: "https://images.unsplash.com/photo-1594051516086-63554ac395aa?auto=format&fit=crop&q=80&w=600" },
-  { id: 6, name: "Running Sneakers", category: "Fashion", price: 120.00, rating: 4.4, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=600" },
-];
+import {PRODUCTS} from '../data/product'
 
 const Shop = () => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams(); // Hook to read URL
+  const [filteredProducts, setFilteredProducts] = useState(PRODUCTS);
   
   // Get Search Query from URL (e.g. ?q=hoodie)
   const searchQuery = searchParams.get('q') || '';
@@ -28,10 +20,8 @@ const Shop = () => {
     sortBy: 'newest'
   });
 
-  const [filteredProducts, setFilteredProducts] = useState(ALL_PRODUCTS);
-
   useEffect(() => {
-    let result = [...ALL_PRODUCTS];
+    let result = [...PRODUCTS];
 
     // 1. Apply Search Query (if it exists)
     if (searchQuery) {

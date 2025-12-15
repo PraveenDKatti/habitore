@@ -8,41 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Star, Minus, Plus, ShoppingBag, ArrowRight, Truck, ShieldCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-
-// --- MOCK DATA (Simulates an API response) ---
-const PRODUCT_DATABASE = {
-  1: {
-    id: 1,
-    name: "Minimalist Wireless Headphones",
-    price: 249.00,
-    rating: 4.8,
-    reviews: 124,
-    description: "Experience pure sound with our noise-cancelling minimalist headphones. Crafted with premium materials for all-day comfort and up to 40 hours of battery life.",
-    images: [
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&q=80&w=800", // Placeholder variants
-      "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&q=80&w=800"
-    ],
-    colors: ["#1a1a1a", "#e5e5e5", "#3b82f6"],
-    sizes: null, // Electronics usually don't have sizes
-    category: "Electronics"
-  },
-  2: {
-    id: 2,
-    name: "Organic Cotton Oversized Hoodie",
-    price: 85.00,
-    rating: 4.5,
-    reviews: 89,
-    description: "Ethically sourced organic cotton hoodie. Features a relaxed fit, drop shoulders, and a kangaroo pocket. Perfect for layering in any season.",
-    images: [
-      "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1620799140408-ed5341cd2431?auto=format&fit=crop&q=80&w=800"
-    ],
-    colors: ["#e5e5e5", "#BC6C4E", "#333333"],
-    sizes: ["XS", "S", "M", "L", "XL"],
-    category: "Fashion"
-  }
-};
+import { getProductById } from '../data/product';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -60,13 +26,17 @@ const ProductDetails = () => {
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to top on load
     setLoading(true);
-    
+
     // Simulate network delay
     setTimeout(() => {
-      // Fetch product by ID, fallback to Product #1 if ID not found for demo
-      const data = PRODUCT_DATABASE[id] || PRODUCT_DATABASE[1]; 
-      setProduct(data);
-      if (data.sizes) setSelectedSize(data.sizes[0]); // Default size
+      const data = getProductById(id);
+      if (data) {
+        setProduct(data);
+        if (data.sizes) setSelectedSize(data.sizes[0]);
+      } else {
+        // Handle not found
+        setProduct(null);
+      }
       setLoading(false);
     }, 500);
   }, [id]);
@@ -76,7 +46,7 @@ const ProductDetails = () => {
 
   return (
     <div className="pt-10 pb-20 px-6 max-w-[1400px] mx-auto min-h-screen">
-      
+
       {/* Breadcrumbs */}
       <nav className="flex items-center text-sm text-secondary mb-8">
         <Link to="/" className="hover:text-primary transition-colors">Home</Link>
@@ -87,22 +57,22 @@ const ProductDetails = () => {
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-        
+
         {/* --- LEFT: Image Gallery --- */}
         <div className="space-y-4">
           {/* Main Image */}
           <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden border border-muted relative">
-            <img 
-              src={product.images[selectedImage]} 
-              alt={product.name} 
+            <img
+              src={product.images[selectedImage]}
+              alt={product.name}
               className="w-full h-full object-cover animate-in fade-in duration-500"
             />
           </div>
-          
+
           {/* Thumbnails */}
           <div className="grid grid-cols-4 gap-4">
             {product.images.map((img, idx) => (
-              <button 
+              <button
                 key={idx}
                 onClick={() => setSelectedImage(idx)}
                 className={`aspect-square rounded-md overflow-hidden border transition-all ${selectedImage === idx ? 'border-accent ring-1 ring-accent' : 'border-transparent hover:border-muted'}`}
@@ -118,7 +88,7 @@ const ProductDetails = () => {
           <h1 className="text-3xl md:text-4xl font-serif text-primary mb-2">
             {product.name}
           </h1>
-          
+
           <div className="flex items-center gap-4 mb-6">
             <span className="text-2xl font-medium text-primary">${product.price.toFixed(2)}</span>
             <div className="flex items-center gap-1 border-l border-muted pl-4">
@@ -136,7 +106,7 @@ const ProductDetails = () => {
 
           {/* Selectors */}
           <div className="space-y-6 mb-8">
-            
+
             {/* Colors */}
             <div>
               <span className="text-sm font-medium text-primary block mb-3">Select Color</span>
@@ -175,14 +145,14 @@ const ProductDetails = () => {
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             {/* Quantity */}
             <div className="flex items-center border border-muted rounded-md w-max">
-              <button 
+              <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 className="p-3 text-secondary hover:text-primary hover:bg-gray-50 transition-colors"
               >
                 <Minus size={16} />
               </button>
               <span className="w-12 text-center font-medium text-primary">{quantity}</span>
-              <button 
+              <button
                 onClick={() => setQuantity(quantity + 1)}
                 className="p-3 text-secondary hover:text-primary hover:bg-gray-50 transition-colors"
               >
@@ -191,7 +161,7 @@ const ProductDetails = () => {
             </div>
 
             {/* Add to Cart */}
-            <button 
+            <button
               className="flex-1 bg-primary text-white py-3 px-6 rounded-md font-medium hover:bg-accent transition-all flex items-center justify-center gap-2 shadow-sm"
               onClick={() => addToCart(product, quantity, product.colors[selectedColor], selectedSize)}
             >
@@ -201,12 +171,12 @@ const ProductDetails = () => {
 
           {/* Trust Badges */}
           <div className="grid grid-cols-2 gap-4 text-xs font-medium text-secondary">
-             <div className="flex items-center gap-2">
-               <Truck size={18} className="text-primary"/> Free Delivery over $50
-             </div>
-             <div className="flex items-center gap-2">
-               <ShieldCheck size={18} className="text-primary"/> 2 Year Warranty
-             </div>
+            <div className="flex items-center gap-2">
+              <Truck size={18} className="text-primary" /> Free Delivery over $50
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck size={18} className="text-primary" /> 2 Year Warranty
+            </div>
           </div>
 
         </div>
