@@ -13,6 +13,7 @@ import Shop from './pages/Shop';
 import ProductDetails from './pages/ProductDetails';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Checkout from './pages/Checkout';
 
 // Main Layout Wrapper (Holds Navbar/Footer for standard pages)
 const MainLayout = () => (
@@ -42,6 +43,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>
+
+      {/* 3. Checkout Layout (Standalone) */}
+      <Route path="/checkout" element={<Checkout />} />
 
     </Routes>
   );

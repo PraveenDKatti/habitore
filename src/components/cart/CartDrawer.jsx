@@ -7,16 +7,18 @@
 import React from 'react';
 import { X, Minus, Plus, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const CartDrawer = () => {
-  const { 
-    cartItems, 
-    isCartOpen, 
-    setIsCartOpen, 
-    removeFromCart, 
-    updateQuantity, 
-    cartTotal 
+  const navigate = useNavigate();
+  const { setIsCartOpen } = useCart();
+
+  const {
+    cartItems,
+    isCartOpen,
+    removeFromCart,
+    updateQuantity,
+    cartTotal
   } = useCart();
 
   // If closed, don't render anything (or use CSS translate for animation)
@@ -24,27 +26,25 @@ const CartDrawer = () => {
   return (
     <>
       {/* Backdrop (Dark overlay) */}
-      <div 
-        className={`fixed inset-0 bg-black/50 z-[60] transition-opacity duration-300 ${
-          isCartOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
+      <div
+        className={`fixed inset-0 bg-black/50 z-[60] transition-opacity duration-300 ${isCartOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}
         onClick={() => setIsCartOpen(false)}
       />
 
       {/* Drawer Panel */}
-      <div 
-        className={`fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-[70] shadow-2xl transform transition-transform duration-300 ease-out ${
-          isCartOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+      <div
+        className={`fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-[70] shadow-2xl transform transition-transform duration-300 ease-out ${isCartOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
       >
         <div className="flex flex-col h-full">
-          
+
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-muted">
             <h2 className="text-xl font-serif font-medium flex items-center gap-2">
               <ShoppingBag size={20} /> Your Bag
             </h2>
-            <button 
+            <button
               onClick={() => setIsCartOpen(false)}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
@@ -58,7 +58,7 @@ const CartDrawer = () => {
               <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
                 <ShoppingBag size={48} className="text-gray-200" />
                 <p className="text-secondary">Your bag is empty.</p>
-                <button 
+                <button
                   onClick={() => setIsCartOpen(false)}
                   className="text-accent font-medium hover:underline"
                 >
@@ -78,7 +78,7 @@ const CartDrawer = () => {
                     <div>
                       <h3 className="text-sm font-medium text-primary line-clamp-1">{item.name}</h3>
                       <p className="text-xs text-secondary mt-1">
-                        {item.selectedColor && <span className="mr-2 capitalize">Color: {item.selectedColor}</span>} 
+                        {item.selectedColor && <span className="mr-2 capitalize">Color: {item.selectedColor}</span>}
                         {item.selectedSize && <span>Size: {item.selectedSize}</span>}
                       </p>
                     </div>
@@ -86,14 +86,14 @@ const CartDrawer = () => {
                     <div className="flex items-center justify-between mt-2">
                       {/* Quantity Controls */}
                       <div className="flex items-center border border-muted rounded-md h-8">
-                        <button 
+                        <button
                           onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
                           className="px-2 h-full hover:bg-gray-50 text-secondary"
                         >
                           <Minus size={12} />
                         </button>
                         <span className="w-8 text-center text-xs font-medium">{item.quantity}</span>
-                        <button 
+                        <button
                           onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
                           className="px-2 h-full hover:bg-gray-50 text-secondary"
                         >
@@ -104,7 +104,7 @@ const CartDrawer = () => {
                       {/* Price & Delete */}
                       <div className="flex items-center gap-3">
                         <span className="text-sm font-medium">${(item.price * item.quantity).toFixed(2)}</span>
-                        <button 
+                        <button
                           onClick={() => removeFromCart(item.variantId)}
                           className="text-gray-400 hover:text-red-500 transition-colors"
                         >
@@ -126,7 +126,12 @@ const CartDrawer = () => {
                 <span className="text-xl font-serif font-medium">${cartTotal.toFixed(2)}</span>
               </div>
               <p className="text-xs text-gray-500 mb-4 text-center">Shipping & taxes calculated at checkout.</p>
-              <button className="w-full py-4 bg-primary text-white font-medium rounded-md hover:bg-accent transition-colors flex items-center justify-center gap-2">
+              <button
+                onClick={() => {
+                  setIsCartOpen(false); // Close drawer
+                  navigate('/checkout'); // Go to page
+                }}
+                className="w-full py-4 bg-primary text-white font-medium rounded-md hover:bg-accent transition-colors flex items-center justify-center gap-2">
                 Checkout Now <ArrowRight size={18} />
               </button>
             </div>
