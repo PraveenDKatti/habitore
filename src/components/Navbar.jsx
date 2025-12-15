@@ -15,7 +15,7 @@ const Navbar = () => {
 
   // Define broad categories for a general store
   const navLinks = [
-    { name: "Deals", href: "/shop"}, // High priority for general retail
+    { name: "Deals", href: "/shop" }, // High priority for general retail
     { name: "Electronics", href: "/shop" },
     { name: "Fashion", href: "/shop" },
     { name: "Home & Living", href: "/shop" },
@@ -61,9 +61,9 @@ const Navbar = () => {
             <Search size={20} strokeWidth={1.5} />
           </button>
 
-          <button className="hidden sm:block hover:text-accent transition-colors">
+          <Link to="/account" className="hidden sm:block hover:text-accent transition-colors">
             <User size={20} strokeWidth={1.5} />
-          </button>
+          </Link>
 
           <button
             className="relative hover:text-accent transition-colors"

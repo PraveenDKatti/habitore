@@ -14,6 +14,7 @@ import ProductDetails from './pages/ProductDetails';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Checkout from './pages/Checkout';
+import Profile from './pages/Profile';
 
 // Main Layout Wrapper (Holds Navbar/Footer for standard pages)
 const MainLayout = () => (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/account" element={<Profile />} />
       </Route>
 
       {/* 2. Authentication Routes (With AuthLayout - Split Screen) */}
