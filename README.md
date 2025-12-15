@@ -4,7 +4,7 @@
 
 Habitore is a modern, responsive, and aesthetically driven e-commerce application built to demonstrate a professional frontend architecture. It simulates a high-end department store experience with a focus on "Quiet Luxury" design principles, seamless navigation, and robust state management.
 
-![Project Banner](https://drive.google.com/file/d/1DhXyBr4NMd8eFBXTkhOSLT1ENxf1_FiN/view?usp=sharing)
+![Project Banner](https://drive.google.com/uc?id=1DhXyBr4NMd8eFBXTkhOSLT1ENxf1_FiN)
 
 ## 🚀 Live Demo
 habitore.vercel.app
